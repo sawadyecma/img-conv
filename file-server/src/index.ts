@@ -1,6 +1,11 @@
 import fastify from "fastify";
+import fastifyStatic from "@fastify/static";
+import path from "path";
 
 const server = fastify();
+server.register(fastifyStatic, {
+  root: path.join(__dirname, "../public"),
+});
 
 server.get("/ping", async (request, reply) => {
   return "pong\n";
