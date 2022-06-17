@@ -1,6 +1,7 @@
 import fastify from "fastify";
 import fastifyStatic from "@fastify/static";
 import fastifyFileUpload from "fastify-file-upload";
+import fastifyCors from "@fastify/cors";
 import path from "path";
 
 const server = fastify();
@@ -11,6 +12,12 @@ server.register(fastifyStatic, {
   root: path.join(__dirname, storageBasepath),
 });
 server.register(fastifyFileUpload);
+server.register(fastifyCors, {
+  origin: (origin, cb) => {
+    cb(null, true);
+    return;
+  },
+});
 
 server.get("/ping", async () => {
   return "pongpongpaaaaaong\n";
@@ -22,7 +29,7 @@ server.post("/upload", function (req, res) {
 
   file.mv(path.join(__dirname, storageBasepath, file.name));
 
-  res.send(file);
+  res.status(204).send();
 });
 
 server.listen({ port: 8080 }, (err, address) => {
