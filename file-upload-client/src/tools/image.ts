@@ -27,3 +27,21 @@ export function getImgProps(img?: HTMLImageElement): GetImagePropsReturnType {
     height: 0,
   };
 }
+
+/** @returns dataurl */
+export function resizeImg(
+  img: HTMLImageElement,
+  width: number,
+  height: number,
+  mimeType: string = "image/png"
+) {
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) {
+    throw new Error("failed to getContext from canvas");
+  }
+  ctx.drawImage(img, 0, 0, width, height);
+  return canvas.toDataURL(mimeType);
+}

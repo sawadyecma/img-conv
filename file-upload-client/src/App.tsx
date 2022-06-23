@@ -2,7 +2,7 @@ import axios, { Axios } from "axios";
 import { useEffect, useRef, useState } from "react";
 import { useFileConvertor } from "./hooks/file/useFileConvertor";
 import { FileRepository } from "./infrastructure/file";
-import { getImgProps } from "./tools/image";
+import { getImgProps, resizeImg } from "./tools/image";
 
 type ObjUrls = {
   before: string;
@@ -39,6 +39,11 @@ export const App = () => {
     fileAnalyzerState.status === "success" ? fileAnalyzerState.image : undefined
   );
 
+  const afterImgDataUrl =
+    fileAnalyzerState.status === "success"
+      ? resizeImg(fileAnalyzerState.image, 100, 100)
+      : "";
+
   return (
     <div>
       <button onClick={onFileSelectButtonClick}>ファイル選択</button>
@@ -56,7 +61,7 @@ export const App = () => {
       <hr />
       <div>
         <p>変換後</p>
-        <img alt="変換後" src={objUrls.after} />
+        <img alt="変換後" src={afterImgDataUrl} />
       </div>
       <hr />
       <button onClick={onFileUpload}>ファイルアップロード</button>
