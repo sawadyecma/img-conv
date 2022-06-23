@@ -1,5 +1,6 @@
-import axios from "axios";
+import axios, { Axios } from "axios";
 import { useRef, useState } from "react";
+import { FileRepository } from "./infrastructure/file";
 
 export const App = () => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -19,11 +20,8 @@ export const App = () => {
   };
 
   const onFileUpload = () => {
-    const headers = { "content-type": "multipart/form-data" };
-    const serverUrl = "http://localhost:8080";
-    const data = new FormData();
-    data.append("image", file!);
-    axios.post("/upload", data, { headers, baseURL: serverUrl });
+    const fileRepository = new FileRepository(axios.create());
+    fileRepository.upload(file!);
   };
 
   return (
