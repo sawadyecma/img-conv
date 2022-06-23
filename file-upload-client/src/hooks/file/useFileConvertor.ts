@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { convertObjUrlToImage } from "../tools/image";
+import { convertObjUrlToImage } from "../../tools/image";
 
 type State =
   | {
@@ -14,7 +14,7 @@ type State =
       image: HTMLImageElement;
     };
 
-export const useFileAnalyzer = (file?: File) => {
+export const useFileConvertor = (file?: File) => {
   const [state, setState] = useState<State>({ status: "loading" });
   useEffect(() => {
     if (!file) {

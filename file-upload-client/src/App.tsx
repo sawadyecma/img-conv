@@ -1,6 +1,6 @@
 import axios, { Axios } from "axios";
 import { useEffect, useRef, useState } from "react";
-import { useFileAnalyzer } from "./hooks/useFileAnalyzer";
+import { useFileConvertor } from "./hooks/file/useFileConvertor";
 import { FileRepository } from "./infrastructure/file";
 
 type ObjUrls = {
@@ -12,7 +12,7 @@ export const App = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | undefined>(undefined);
   const [objUrls, setObjUrls] = useState<ObjUrls>({ before: "", after: "" });
-  const fileAnalyzerState = useFileAnalyzer(file);
+  const fileAnalyzerState = useFileConvertor(file);
 
   const onFileSelectButtonClick = () => {
     inputRef.current?.click();
@@ -42,12 +42,12 @@ export const App = () => {
       <hr />
       <div>
         <p>変換前</p>
-        <img alt="変換前" src={beforeImgObjUrl}></img>
+        <img alt="変換前" src={beforeImgObjUrl} />
       </div>
       <hr />
       <div>
         <p>変換後</p>
-        <img alt="変換後" src={objUrls.after}></img>
+        <img alt="変換後" src={objUrls.after} />
       </div>
       <hr />
       <button onClick={onFileUpload}>ファイルアップロード</button>
