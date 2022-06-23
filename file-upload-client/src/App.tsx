@@ -1,10 +1,18 @@
 import axios, { Axios } from "axios";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useFileAnalyzer } from "./hooks/useFileAnalyzer";
 import { FileRepository } from "./infrastructure/file";
+
+type ObjUrls = {
+  before: string;
+  after: string;
+};
 
 export const App = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | undefined>(undefined);
+  const [objUrls, setObjUrls] = useState<ObjUrls>({ before: "", after: "" });
+  const fileAnalyzerState = useFileAnalyzer(file);
 
   const onFileSelectButtonClick = () => {
     inputRef.current?.click();
@@ -24,11 +32,24 @@ export const App = () => {
     fileRepository.upload(file!);
   };
 
+  const beforeImgObjUrl =
+    fileAnalyzerState.status === "success" ? fileAnalyzerState.objUrl : "";
+
   return (
     <div>
-      React App By Vite
       <button onClick={onFileSelectButtonClick}>ファイル選択</button>
       <input ref={inputRef} type="file" hidden onChange={onFileSelect}></input>
+      <hr />
+      <div>
+        <p>変換前</p>
+        <img alt="変換前" src={beforeImgObjUrl}></img>
+      </div>
+      <hr />
+      <div>
+        <p>変換後</p>
+        <img alt="変換後" src={objUrls.after}></img>
+      </div>
+      <hr />
       <button onClick={onFileUpload}>ファイルアップロード</button>
     </div>
   );
