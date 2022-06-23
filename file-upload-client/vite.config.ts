@@ -8,4 +8,7 @@ export default defineConfig({
     port: 17001,
   },
   plugins: [react()],
+  esbuild: {
+    logOverride: { "this-is-undefined-in-esm": "silent" },
+  },
 });
