@@ -2,6 +2,7 @@ import axios, { Axios } from "axios";
 import { useEffect, useRef, useState } from "react";
 import { useFileConvertor } from "./hooks/file/useFileConvertor";
 import { FileRepository } from "./infrastructure/file";
+import { getImgProps } from "./tools/image";
 
 type ObjUrls = {
   before: string;
@@ -34,6 +35,9 @@ export const App = () => {
 
   const beforeImgObjUrl =
     fileAnalyzerState.status === "success" ? fileAnalyzerState.objUrl : "";
+  const imgProps = getImgProps(
+    fileAnalyzerState.status === "success" ? fileAnalyzerState.image : undefined
+  );
 
   return (
     <div>
@@ -43,6 +47,11 @@ export const App = () => {
       <div>
         <p>変換前</p>
         <img alt="変換前" src={beforeImgObjUrl} />
+        <div>
+          <span>幅: {imgProps.width}</span>
+          &nbsp;
+          <span>高さ: {imgProps.height}</span>
+        </div>
       </div>
       <hr />
       <div>
