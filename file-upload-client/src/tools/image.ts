@@ -45,3 +45,11 @@ export function resizeImg(
   ctx.drawImage(img, 0, 0, width, height);
   return canvas.toDataURL(mimeType);
 }
+
+export async function convertDataUrlToFile(
+  dataUrl: string,
+  filename: string = "no-name"
+): Promise<File> {
+  const blob = await (await fetch(dataUrl)).blob();
+  return new File([blob], filename);
+}

@@ -2,7 +2,7 @@ import axios from "axios";
 import { useRef, useState } from "react";
 import { useFileConvertor } from "./hooks/file/useFileConvertor";
 import { FileRepository } from "./infrastructure/file";
-import { getImgProps, resizeImg } from "./tools/image";
+import { convertDataUrlToFile, getImgProps, resizeImg } from "./tools/image";
 
 export const App = () => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -27,16 +27,25 @@ export const App = () => {
     fileRepository.upload(file!);
   };
 
+  const afterImgDataUrl =
+    fileAnalyzerState.status === "success"
+      ? resizeImg(fileAnalyzerState.image, 100, 100)
+      : "";
+
+  const onConvertedFileUpload = async () => {
+    const convertedFile = await convertDataUrlToFile(
+      afterImgDataUrl,
+      file?.name
+    );
+    const fileRepository = new FileRepository(axios.create());
+    fileRepository.upload(convertedFile);
+  };
+
   const beforeImgObjUrl =
     fileAnalyzerState.status === "success" ? fileAnalyzerState.objUrl : "";
   const imgProps = getImgProps(
     fileAnalyzerState.status === "success" ? fileAnalyzerState.image : undefined
   );
-
-  const afterImgDataUrl =
-    fileAnalyzerState.status === "success"
-      ? resizeImg(fileAnalyzerState.image, 100, 100)
-      : "";
 
   return (
     <div>
@@ -51,14 +60,15 @@ export const App = () => {
           &nbsp;
           <span>高さ: {imgProps.height}</span>
         </div>
+        <button onClick={onFileUpload}>ファイルアップロード</button>
       </div>
       <hr />
       <div>
         <p>変換後</p>
         <img alt="変換後" src={afterImgDataUrl} />
+        <button onClick={onConvertedFileUpload}>ファイルアップロード</button>
       </div>
       <hr />
-      <button onClick={onFileUpload}>ファイルアップロード</button>
     </div>
   );
 };
