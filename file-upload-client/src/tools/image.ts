@@ -1,8 +1,12 @@
 export async function convertObjUrlToImage(
   objUrl: ReturnType<typeof URL.createObjectURL>
 ) {
-  return new Promise<HTMLImageElement>((resolve) => {
+  return new Promise<HTMLImageElement>((resolve, reject) => {
     const image = new Image();
+    image.onerror = (e) => {
+      console.error("failed to load image from objUrl");
+      reject(e);
+    };
     image.onload = () => {
       resolve(image);
     };
