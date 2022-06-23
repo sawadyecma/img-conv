@@ -36,6 +36,7 @@ export function resizeImg(
   mimeType: string = "image/png"
 ) {
   const canvas = document.createElement("canvas");
+  // specify canvas area length
   canvas.width = width;
   canvas.height = height;
   const ctx = canvas.getContext("2d");
