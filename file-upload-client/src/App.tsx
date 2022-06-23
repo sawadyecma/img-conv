@@ -1,18 +1,12 @@
-import axios, { Axios } from "axios";
-import { useEffect, useRef, useState } from "react";
+import axios from "axios";
+import { useRef, useState } from "react";
 import { useFileConvertor } from "./hooks/file/useFileConvertor";
 import { FileRepository } from "./infrastructure/file";
 import { getImgProps, resizeImg } from "./tools/image";
 
-type ObjUrls = {
-  before: string;
-  after: string;
-};
-
 export const App = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | undefined>(undefined);
-  const [objUrls, setObjUrls] = useState<ObjUrls>({ before: "", after: "" });
   const fileAnalyzerState = useFileConvertor(file);
 
   const onFileSelectButtonClick = () => {
