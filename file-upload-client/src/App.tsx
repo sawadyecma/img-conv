@@ -2,8 +2,12 @@ import axios from "axios";
 import { useRef, useState } from "react";
 import { useFileConvertor } from "./hooks/file/useFileConvertor";
 import { FileRepository } from "./infrastructure/file";
-import { convertDataUrlToFile, getImgProps, resizeImg } from "./tools/image";
-
+import { convertExtToPng } from "./tools/file/ext";
+import {
+  convertDataUrlToFile,
+  getImgProps,
+  resizeImg,
+} from "./tools/file/image";
 export const App = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | undefined>(undefined);
@@ -18,7 +22,8 @@ export const App = () => {
       return;
     }
 
-    setFile(files.item(0) ?? undefined);
+    const file = files.item(0) ?? undefined;
+    setFile(file);
     e.target.value = "";
   };
 
@@ -35,7 +40,7 @@ export const App = () => {
   const onConvertedFileUpload = async () => {
     const convertedFile = await convertDataUrlToFile(
       afterImgDataUrl,
-      file?.name
+      convertExtToPng(file?.name)
     );
     const fileRepository = new FileRepository(axios.create());
     fileRepository.upload(convertedFile);

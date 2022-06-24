@@ -53,7 +53,7 @@ export function resizeImg(
 
 export async function convertDataUrlToFile(
   dataUrl: string,
-  filename: string = "no-name"
+  filename: string
 ): Promise<File> {
   const blob = await (await fetch(dataUrl)).blob();
   return new File([blob], filename);

@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
-import { convertObjUrlToImage } from "../../tools/image";
+import {
+  convertDataUrlToFile,
+  convertObjUrlToImage,
+} from "../../tools/file/image";
+import { convertPdfObjUrlToDataUrl } from "../../tools/file/pdf";
+import { convertExtToPng } from "../../tools/file/ext";
 
 type State =
   | {
@@ -22,8 +27,19 @@ export const useFileConvertor = (file?: File) => {
       return;
     }
 
-    const objUrl = URL.createObjectURL(file);
+    let objUrl = URL.createObjectURL(file);
+
     (async () => {
+      if (file?.type === "application/pdf") {
+        const pdfDataUrl = await convertPdfObjUrlToDataUrl(objUrl);
+        URL.revokeObjectURL(objUrl);
+        const pdfFile = await convertDataUrlToFile(
+          pdfDataUrl,
+          convertExtToPng(file.name)
+        );
+        objUrl = URL.createObjectURL(pdfFile);
+      }
+
       const image = await convertObjUrlToImage(objUrl);
       setState({ status: "success", objUrl, image });
     })();

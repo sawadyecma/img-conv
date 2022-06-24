@@ -10,6 +10,7 @@
   "dependencies": {
     "@aspida/axios": "^1.10.2",
     "axios": "^0.27.2",
+    "pdfjs-dist": "^2.8.335",
     "react": "^18.0.0",
     "react-dom": "^18.0.0"
   },
