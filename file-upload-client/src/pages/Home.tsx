@@ -1,14 +1,15 @@
 import axios from "axios";
 import { useRef, useState } from "react";
-import { useFileConvertor } from "./hooks/file/useFileConvertor";
-import { FileRepository } from "./infrastructure/file";
-import { convertExtToPng } from "./tools/file/ext";
+import { useFileConvertor } from "../hooks/file/useFileConvertor";
+import { FileRepository } from "../infrastructure/file";
+import { convertExtToPng } from "../tools/file/ext";
 import {
   convertDataUrlToFile,
   getImgProps,
   resizeImg,
-} from "./tools/file/image";
-export const App = () => {
+} from "../tools/file/image";
+
+export const Home = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | undefined>(undefined);
   const fileAnalyzerState = useFileConvertor(file);
@@ -77,5 +78,3 @@ export const App = () => {
     </div>
   );
 };
-
-export default App;
